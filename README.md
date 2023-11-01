@@ -9,6 +9,10 @@
 - PHP 7.25+
 - Straight arms
 
+# Install
+
+`composer require teletone/teletone`
+
 # The simplest bot
 
 It's amazingly simple:
