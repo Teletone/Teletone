@@ -166,9 +166,29 @@ class Bot
             if ($param instanceof InputFile)
                 $params[$key] = fopen($params[$key]->getFilename(), 'r');
 
+        $is_split = false;
+        if ($method == 'sendMessage')
+        {
+            // Splitting a message larger than 4096 bytes into several
+            if (mb_strlen($params['text']) > 4096)
+            {
+                $split_text = mb_substr($params['text'], 4096);
+                $params['text'] = mb_substr($params['text'], 0, 4096);
+                $is_split = true;
+            }
+        }
+
         $res = $this->client->post($method, [
             'multipart' => $this->toMultiPart($params)
         ]);
+
+        if ($is_split)
+        {
+            $params['text'] = $split_text;
+            // recursion
+            self::_execute($method, $params);
+        }
+
         $data = json_decode($res->getBody());
         return $data;
     }
