@@ -38,7 +38,7 @@ $bot->polling();
 
 Good projects provide good documentation
 
-We are not deprived of this: [Documentation](docs/MAIN)
+We are not deprived of this: [Documentation](docs/MAIN.md)
 
 # Donate
 
