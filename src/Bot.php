@@ -28,6 +28,8 @@ class Bot
      * 
      * @param string $token     Telegram bot token
      * @param array $options    Additional bot options
+     * - parse_mode = Mode for parsing entities in the message text
+     * - debug = Set true to enable debug mode
      */
     public function __construct($token, $options = [])
     {
@@ -169,5 +171,15 @@ class Bot
         ]);
         $data = json_decode($res->getBody());
         return $data;
+    }
+
+    function getToken()
+    {
+        return $this->token;
+    }
+
+    function getClient()
+    {
+        return $this->client;
     }
 }
