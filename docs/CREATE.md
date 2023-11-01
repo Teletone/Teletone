@@ -2,15 +2,19 @@
 
 First install our project using composer:
 
-`composer install teletone/teletone`
+```php
+composer install teletone/teletone
+```
 
 Now let's connect autoload:
 
-`require 'vendor/autoload.php';`
+```php
+require 'vendor/autoload.php';
+```
 
 Now you can create a bot:
 
-```
+```php
 $bot = new Teletone\Bot($bot_token);
 ```
 
@@ -21,7 +25,7 @@ The following options can be passed to the second parameter:
 
 Example:
 
-```
+```php
 $bot = new Teletone\Bot($bot_token, [
     'parse_mode' => 'html',
     'debug' => true

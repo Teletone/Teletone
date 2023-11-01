@@ -13,7 +13,7 @@
 
 It's amazingly simple:
 
-```
+```php
 <?php
 
 require 'vendor/autoload.php';
