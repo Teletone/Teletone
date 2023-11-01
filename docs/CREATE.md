@@ -2,9 +2,7 @@
 
 First install our project using composer:
 
-```php
-composer install teletone/teletone
-```
+`composer install teletone/teletone`
 
 Now let's connect autoload:
 
