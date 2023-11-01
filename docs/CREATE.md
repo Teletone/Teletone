@@ -2,7 +2,7 @@
 
 First install our project using composer:
 
-`composer install teletone/teletone`
+`composer require teletone/teletone`
 
 Now let's connect autoload:
 
