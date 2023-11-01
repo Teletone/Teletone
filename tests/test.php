@@ -1,6 +1,7 @@
 <?php
 
 // Homemade testing! Temporary solution
+// In fact, testing libraries are very buggy, please learn to write code
 
 require 'vendor/autoload.php';
 
