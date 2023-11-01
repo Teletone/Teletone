@@ -44,8 +44,8 @@ We are not deprived of this: [Documentation](docs/MAIN.md)
 
 Although the library looks simple, it took a lot of experience in developing bots in different languages and many months to develop it. If you like the library you can support me, and if not I just did complete crap
 
-Paypay, Cards and etc:
-https://boosty.to/teletone "Donate with Boosty"
+Paypal, Cards and etc:
+[Donate with Boosty](https://boosty.to/teletone)
 
 # Testing
 
