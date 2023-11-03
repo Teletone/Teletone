@@ -87,9 +87,9 @@ Fires when the inline button is clicked
 
 Params:
 
-- **text**        callback_data text
-- **callback**    Сallback for call
-- **regex**       Sets true to check callback by regex, then text should be a regular expression
+- **text** - callback_data text
+- **callback** - Сallback for call
+- **regex** - Sets true to check callback by regex, then text should be a regular expression
 
 Examples:
 
