@@ -75,7 +75,7 @@ Run **dev.sh** and develop
 
 Good projects provide good documentation
 
-We are not deprived of this: [Documentation](docs/MAIN.md)
+We are not deprived of this: [Documentation](docs/00_MAIN.md)
 
 # Donate
 
