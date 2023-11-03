@@ -61,10 +61,12 @@ done
 
 And replace **bot.php** with the file with the bot entry point
 
+Make the file executable (we are not a book on linux)
+
 And process requests using this function:
 
 ```php
-$bot->handleUpdates();
+$bot->handleUpdatesAndDrop();
 ```
 
 Run **dev.sh** and develop

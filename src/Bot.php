@@ -61,9 +61,7 @@ class Bot
         $client = new Client();
         $offset = 0;
         while (true)
-        {
             $offset = $this->handleUpdates($offset);
-        }
     }
 
     public function setWebhook($url, $params = [])
@@ -104,7 +102,8 @@ class Bot
             ]
         ]);
         $data = json_decode($res->getBody()->getContents());
-        $this->debug('Updates received: '.count($data->result));
+        if (!$drop)
+            $this->debug('Updates received: '.count($data->result));
         if (!$drop && count($data->result) > 0)
         {
             foreach ($data->result as $item)
@@ -121,6 +120,15 @@ class Bot
     public function dropPendingUpdates()
     {
         $offset = $this->handleUpdates(0, true);
+        $this->handleUpdates($offset, true);
+    }
+
+    /**
+     * Processes updates and then drops them
+     */
+    public function handleUpdatesAndDrop()
+    {
+        $offset = $this->handleUpdates();
         $this->handleUpdates($offset, true);
     }
 
