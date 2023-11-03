@@ -135,7 +135,8 @@ class Router
                             $call = true;
                         else
                         {
-                            $command = substr($update->message->text, 1);
+                            $params = explode(' ', $update->message->text);
+                            $command = substr($params[0], 1);
                             if ($route['regex'])
                                 $call = preg_match($route['text'], $command) === 1;
                             else

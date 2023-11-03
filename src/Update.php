@@ -2,8 +2,10 @@
 
 namespace Teletone;
 
-const MESSAGE = 1;
-const CALLBACK_QUERY = 2;
+const COMMAND = 1;
+const MESSAGE = 2;
+const CALLBACK_QUERY = 3;
+const OTHER = 4;
 
 /** Class that provides convenient functions for Update */
 class Update
@@ -11,21 +13,38 @@ class Update
     private $bot;
     private $update;
     private $update_type;
+    private $params = [];
 
     public function __construct($bot, $update)
     {
         $this->bot = $bot;
         $this->update = $update;
-        if (isset($update->message))
-            $this->update_type = MESSAGE;
-        if (isset($update->callback_query))
+        if (isset($update->message) && isset($update->message->text))
+        {
+            if ($update->message->text[0] === '/')
+                $this->update_type = COMMAND;
+            else
+                $this->update_type = MESSAGE;
+        }
+        else if (isset($update->callback_query))
             $this->update_type = CALLBACK_QUERY;
+        else
+            $this->update_type = OTHER;
+
+        if ($this->update_type == COMMAND)
+        {
+            $params = explode(' ', $update->message->text);
+            array_shift($params);
+            $this->params = $params;
+        }
     }
 
     public function __get($name)
     {
         if ($name == 'bot')
             return $this->bot;
+        if ($name == 'params')
+            return $this->params;
         if (empty($this->update->$name))
             return NULL;
         return $this->update->$name;
@@ -46,7 +65,7 @@ class Update
     /** Message answer */
     public function answer($text = '', $params = [])
     {
-        if ($this->update_type == MESSAGE)
+        if ($this->update_type == COMMAND || $this->update_type == MESSAGE)
             $this->bot->_execute('sendMessage', array_merge([
                 'chat_id' => $this->update->message->from->id,
                 'text' => $text

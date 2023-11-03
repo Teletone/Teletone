@@ -60,11 +60,11 @@ $r->command('num', static function($update) {
     $update->answer(mt_rand(1, 100));
 });
 
-// Use: /num 12345
-$r->command('/^num [0-9]+$/', static function($update) {
-    $num = explode(' ', $update->message->text)[1];
-    $update->answer('Num: '.$num);
-}, true);
+// Parameters
+// Use: /num param1 param2
+$r->command('num', static function($update) {
+    $update->answer('Count params: '.count($update->params)."\nParam1: ".$update->params[0]."\nParam2: ".$update->params[1]);
+});
 ```
 
 ## any

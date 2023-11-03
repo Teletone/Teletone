@@ -36,7 +36,9 @@ class Bot
         $this->token = $token;
         $this->options = $options;
         $this->client = new Client([
-            'base_uri' => "https://api.telegram.org/bot{$token}/"
+            'base_uri' => "https://api.telegram.org/bot{$token}/",
+            'connect_timeout' => 10.0,
+            'timeout' => 10.0
         ]);
         $this->router = new Router($this);
     }
