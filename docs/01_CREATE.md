@@ -1,4 +1,4 @@
-[To home documentation](00_MAIN.md)
+[To main documentation](00_MAIN.md)
 
 # Creating a bot
 
