@@ -2,7 +2,7 @@
 
 So we want to make a telegram bot!
 
-To give birth to a new bot we need a bot [@BotFather](https://t.me/BotFather)
+To give birth to a new bot we need a bot [@BotFather](https://t.me/BotFather){:target="_blank"}
 
 Install our project using composer:
 
