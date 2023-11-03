@@ -87,16 +87,15 @@ Fires when the inline button is clicked
 
 Params:
 
-- **text** - callback_data text
-- **callback** - Сallback for call
+- **text**        callback_data text
+- **callback**    Сallback for call
+- **regex**       Sets true to check callback by regex, then text should be a regular expression
 
 Examples:
 
 ```php
 $r->callbackQuery('click', static function($update) {
-    $update->answer('clicked', [
-        'show_alert' => true
-    ]);
+    $update->answer('clicked', [ 'show_alert' => true ]);
 });
 ```
 

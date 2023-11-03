@@ -39,9 +39,9 @@ class Router
     /**
      * Registers a new command handler
      * 
-     * @param string $text          Command text
-     * @param string $callback      Callback
-     * @param string $regex         Set to true to check command as a regular expression
+     * @param string    $text           Command text
+     * @param string    $callback       Callback
+     * @param boolean   $regex          Set to true to check command as a regular expression
      * 
      * @return NULL
      */
@@ -57,10 +57,10 @@ class Router
     /**
      * Registers a new message handler
      * 
-     * @param string $text          Message text
-     * @param string $callback      Callback
-     * @param string $regex         Set to true to check text as a regular expression
-     * @param string $types         Any combination of Teletone\Types, joined with the binary OR (|) operator
+     * @param string    $text           Message text
+     * @param string    $callback       Callback
+     * @param boolean   $regex          Set to true to check text as a regular expression
+     * @param string    $types          Any combination of Teletone\Types, joined with the binary OR (|) operator
      * 
      * @return NULL
      */
@@ -77,16 +77,18 @@ class Router
     /**
      * Registers a new callback query handler
      * 
-     * @param string $text          Text callback data
-     * @param string $callback      Callback
+     * @param string    $text           Text callback data
+     * @param string    $callback       Callback
+     * @param boolean   $regex          Set to true to check text data as a regular expression
      * 
      * @return NULL
      */
-    public function callbackQuery($text, $callback)
+    public function callbackQuery($text, $callback, $regex = false)
     {
         $this->routes['callback_query'][] = [
             'text' => $text,
-            'callback' => $callback
+            'callback' => $callback,
+            'regex' => $regex
         ];
     }
 
@@ -236,8 +238,10 @@ class Router
             {
                 foreach ($this->routes['callback_query'] as $route)
                 {
-                    if ($route['text'] === $update->callback_query->data)
-                        $call = true;
+                    if ($route['regex'])
+                        $call = preg_match($route['text'], $update->callback_query->data) === 1;
+                    else
+                        $call = $update->callback_query->data === $route['text'];
 
                     if ($call)
                     {
