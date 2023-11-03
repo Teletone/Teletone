@@ -31,12 +31,43 @@ $r->command('test', static function($update) {
     $update->answer('ok');
 });
 
-$r->message(NULL, static function($update) {
+$r->message('hi', static function($update) {
     $update->answer('hello');
 });
 
 $bot->polling();
 ```
+
+With webhook:
+
+Use this instead of $bot->polling():
+
+```php
+$bot->handleWebhook();
+```
+
+# Live development
+
+Turning the bot on and off after any changes is a bad idea and is used by python noobs libraries
+
+To do this, make a script **dev.sh** (for Linux, if you have Windows, then my condolences):
+
+```bash
+#!/bin/sh
+while true; do
+    php bot.php
+done
+```
+
+And replace **bot.php** with the file with the bot entry point
+
+And process requests using this function:
+
+```php
+$bot->handleUpdates();
+```
+
+Run **dev.sh** and develop
 
 # Documentation
 
@@ -54,3 +85,7 @@ Run command:
 ```
 composer run tests
 ```
+
+# Contributing
+
+Just use the library and report bugs
