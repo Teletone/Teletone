@@ -1,6 +1,10 @@
 # Creating a bot
 
-First install our project using composer:
+So we want to make a telegram bot!
+
+To give birth to a new bot we need a bot [@BotFather](https://t.me/BotFather)
+
+Install our project using composer:
 
 `composer require teletone/teletone`
 
