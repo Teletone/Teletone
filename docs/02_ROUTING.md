@@ -118,4 +118,4 @@ $r->chatMember(static function($update) {
 }, Teletone\Statuses::MEMBER);
 ```
 
-[Next chapter: QRF](02_QRF.md)
+[Next chapter: QRF](03_QRF.md)
