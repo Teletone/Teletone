@@ -6,7 +6,7 @@ To give birth to a new bot we need a bot [@BotFather](https://t.me/BotFather)
 
 Launch the bot and enter the command /newbot
 
-![BotFatherNewbot](https://imgur.com/xUtd0zm)
+![BotFatherNewbot](https://i.imgur.com/xUtd0zm.png)
 
 Enter your bot's name
 
