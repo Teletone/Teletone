@@ -46,10 +46,7 @@ We are not deprived of this: [Documentation](docs/MAIN.md)
 
 # Donate
 
-Although the library looks simple, it took a lot of experience in developing bots in different languages and many months to develop it. If you like the library you can support me, and if not I just did complete crap
-
-Paypal, Cards and etc:
-[Donate with Boosty](https://boosty.to/teletone)
+Research shows that very few people have the gift of generosity, so we won't ask for money anymore. Instead, write an email to teletone@skiff.com if you need a telegram (or discord) bot, and we can develop you any bot for your bucks!
 
 # Testing
 
