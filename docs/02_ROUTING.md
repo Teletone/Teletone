@@ -63,7 +63,9 @@ $r->command('num', static function($update) {
 // Parameters
 // Use: /num param1 param2
 $r->command('num', static function($update) {
-    $update->answer('Count params: '.count($update->params)."\nParam1: ".$update->params[0]."\nParam2: ".$update->params[1]);
+    $update->answer('Count params: '.count($update->params));
+    $update->answer('Param1: '.$update->params[0]);
+    $update->answer('Param2: '.$update->params[1]);
 });
 ```
 
