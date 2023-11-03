@@ -4,7 +4,13 @@ So we want to make a telegram bot!
 
 To give birth to a new bot we need a bot [@BotFather](https://t.me/BotFather)
 
-<a href="http://example.com/" target="_blank">example</a>
+Launch the bot and enter the command /newbot
+
+![BotFatherNewbot](https://imgur.com/xUtd0zm)
+
+Enter your bot's name
+
+
 
 Install our project using composer:
 
