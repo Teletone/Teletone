@@ -50,7 +50,7 @@ $bot->handleWebhook();
 
 Turning the bot on and off after any changes is a bad idea and is used by python noobs libraries
 
-To do this, make a script **dev.sh** (for Linux, if you have Windows, then my condolences):
+To do right, make a script **dev.sh** (for Linux, if you have Windows, then my condolences):
 
 ```bash
 #!/bin/sh
