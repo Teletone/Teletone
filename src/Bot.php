@@ -92,7 +92,7 @@ class Bot
     {
         $cidr_to_mask = static function($mask) {
             return long2ip(pow(2, 32)-pow(2, (32-$mask)));
-        }
+        };
         $ip = ip2long($ip);
         $p = explode('/', $net);
         $ip_net = ip2long($p[0]);
@@ -192,6 +192,11 @@ class Bot
     public function __call($name, $arguments = [])
     {
         return $this->_execute($name, ...$arguments);
+    }
+
+    public function stdToArray($std)
+    {
+        return json_decode(json_encode($std), true);
     }
 
     private function toMultiPart($arr)

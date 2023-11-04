@@ -27,12 +27,12 @@ $bot_token = 'YOUR_BOT_TOKEN';
 $bot = new Teletone\Bot($bot_token);
 $r = $bot->getRouter();
 
-$r->command('test', static function($update) {
-    $update->answer('ok');
+$r->command('start', static function($update) {
+    $update->answer("Welcome, {$update->message->from->first_name}!");
 });
 
 $r->message('hi', static function($update) {
-    $update->answer('hello');
+    $update->answer('Hello!');
 });
 
 $bot->polling();
@@ -41,6 +41,12 @@ $bot->polling();
 With webhook:
 
 Read our [documentation about webhooks](docs/05_WEBHOOK.md)
+
+# Documentation
+
+Good projects provide good documentation
+
+We are not deprived of this: [Documentation](docs/00_MAIN.md)
 
 # Live development
 
@@ -67,11 +73,7 @@ $bot->handleUpdatesAndDrop();
 
 Run **dev.sh** and develop
 
-# Documentation
-
-Good projects provide good documentation
-
-We are not deprived of this: [Documentation](docs/00_MAIN.md)
+If you plan to run a real bot on a PC, then it is better to use $bot->polling() for better performance
 
 # Donate
 
@@ -83,6 +85,10 @@ Run command:
 ```
 composer run tests
 ```
+
+# Performance
+
+The library works as fast as possible. But it also depends on the performance of the server and its location from the telegram servers. For good testing, we need testers who have loaded bots with requests that exceed 10,000 requests per minute
 
 # Contributing
 

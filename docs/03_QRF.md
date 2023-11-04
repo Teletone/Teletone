@@ -36,4 +36,4 @@ $update->reply('hello', [
 ]);
 ```
 
-[Next chapter: Downloading files](04_DOWNLOADING.md)
+[Next chapter: Methods](04_METHODS.md)
