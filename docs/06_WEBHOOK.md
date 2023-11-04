@@ -58,3 +58,4 @@ $bot->handleWebhook(true, $ip);
 
 The function returns false if the ip is not allowed, otherwise true and performs processing
 
+[Next chapter: Keyboard](07_KEYBOARD.md)
