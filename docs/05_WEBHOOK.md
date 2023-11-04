@@ -15,4 +15,27 @@ echo json_encode($ret);
 
 In the second parameter you can pass the parameters described here: https://core.telegram.org/bots/api#setwebhook
 
-If everything went well you will see the message: Webhook was set
+If everything went well you will see the message: **Webhook was set**
+
+To remove a hook, call the method:
+
+```php
+$bot->deleteWebhook();
+```
+
+The function takes one parameter $drop_pending_updates, set to true to discard pending updates
+
+Update processing works using the function:
+
+```php
+$bot->handleWebhook();
+```
+
+It is also useful to include logs in the file:
+
+```php
+$bot = new Teletone\Bot($bot_token, [
+    'debug' => true,
+    'debug_in_file' => 'debug.log'
+]);
+```
