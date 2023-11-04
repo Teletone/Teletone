@@ -20,3 +20,4 @@ $update->download('photo.jpg');
 $update->download('/home/user/photo.jpg');
 ```
 
+[Next chapter: Webhook](05_WEBHOOK.md)

@@ -23,6 +23,9 @@ class Bot
     /** @var GuzzleHttp\Client */
     private $client;
 
+    /** @var string Bot run type - polling or webhook */
+    private $run_type;
+
     /**
      * Constructs a bot class
      * 
@@ -41,6 +44,10 @@ class Bot
             'timeout' => 10.0
         ]);
         $this->router = new Router($this);
+        if (php_sapi_name() === 'cli')
+            $this->run_type = 'polling';
+        else
+            $this->run_type = 'webhook';
     }
 
     /**
@@ -90,7 +97,17 @@ class Bot
     public function debug($message)
     {
         if (isset($this->options['debug']) && $this->options['debug'])
-            echo $message."\n";
+        {
+            if ($this->run_type == 'polling')
+                echo $message."\n";
+            if (!empty($this->options['debug_in_file']))
+                $this->_log($message, $this->options['debug_in_file']);
+        }
+    }
+
+    public function _log($text, $file)
+    {
+        file_put_contents($file, '['.date('Y-m-d H:i:s')."]\n".$text."\n\n", FILE_APPEND);
     }
 
     /*
