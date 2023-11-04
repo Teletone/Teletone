@@ -87,11 +87,46 @@ class Bot
         ]);
     }
 
-    public function handleWebhook()
+    /** Checks whether the IP address is in the address range. You can specify a mask */
+    public function ipInNet($ip, $net)
     {
+        $cidr_to_mask = static function($mask) {
+            return long2ip(pow(2, 32)-pow(2, (32-$mask)));
+        }
+        $ip = ip2long($ip);
+        $p = explode('/', $net);
+        $ip_net = ip2long($p[0]);
+        $ip_mask = (isset($p[1])) ? $p[1] : 0;
+        $mask = ip2long($cidr_to_mask($ip_mask));
+        if ($ip_mask == 0 && $ip == $ip_net)
+            return true;
+        if (($ip & $mask) == $ip_net)
+            return true;
+        else
+            return false;
+    }
+
+    public function handleWebhook($check_ip = true, $ip = NULL)
+    {
+        if ($check_ip)
+        {
+            if (is_null($ip))
+            {
+                if (isset($_SERVER['HTTP_CF_CONNECTING_IP']))
+                    $ip = $_SERVER['HTTP_CF_CONNECTING_IP'];
+                else
+                    $ip = $_SERVER['REMOTE_ADDR'];
+            }
+            if (!$this->ipInNet($ip, '149.154.160.0/20') || !$this->ipInNet($ip, '91.108.4.0/22'))
+            {
+                $this->debug("IP $ip does not match trusted IPs");
+                return false;
+            }
+        }
         $data = json_decode(file_get_contents('php://input'));
         if (!is_null($data))
             $this->router->_handle($data);
+        return true;
     }
 
     public function debug($message)

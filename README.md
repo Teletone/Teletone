@@ -1,8 +1,8 @@
 # Teletone
 
-## The library is under development
-
 ## A library for telegram bots that strives to make development simple and convenient
+
+### library tested on [Bot API 6.9](https://core.telegram.org/bots/api#september-22-2023)
 
 # Requirements
 
@@ -40,11 +40,7 @@ $bot->polling();
 
 With webhook:
 
-Use this instead of $bot->polling():
-
-```php
-$bot->handleWebhook();
-```
+Read our [documentation about webhooks](docs/05_WEBHOOK.md)
 
 # Live development
 
@@ -79,7 +75,7 @@ We are not deprived of this: [Documentation](docs/00_MAIN.md)
 
 # Donate
 
-Research shows that very few people have the gift of generosity, so we won't ask for money anymore. Instead, write an email to teletone@skiff.com if you need a telegram (or discord) bot, and we can develop you any bot for your bucks!
+A fool waits for money from heaven, but a smart man works. Write an email to teletone@skiff.com if you need a telegram (or discord) bot, and I can develop you any bot for your money
 
 # Testing
 
@@ -91,3 +87,5 @@ composer run tests
 # Contributing
 
 Just use the library and report bugs
+
+Me, my wife, and some good people write this nonsense
