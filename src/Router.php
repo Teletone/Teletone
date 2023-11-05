@@ -290,7 +290,40 @@ class Router
         foreach ($call_array as $func)
         {
             $c_update = new Update($this->bot, $update);
-            $ret = $func($c_update);
+            if (gettype($func) == 'string')
+            {
+                // Checking whether a class needs to be created
+                $check_call_class = explode('->', $func);
+                if (count($check_call_class) == 2)
+                {
+                    $class_name = $check_call_class[0];
+                    $method = $check_call_class[1];
+                    if (!class_exists($class_name))
+                        throw new \Exception("Unable to load class: $class_name");
+                    $class = new $class_name;
+                    if (!method_exists($class, $method))
+                        throw new \Exception("Method $method not found in class $class_name");
+                    $ret = $class->$method($c_update);
+                }
+                else
+                {
+                    $check_call_static_class = explode('::', $func);
+                    if (count($check_call_static_class) == 2)
+                    {
+                        $class_name = $check_call_static_class[0];
+                        $method = $check_call_static_class[1];
+                        if (!class_exists($class_name))
+                            throw new \Exception("Unable to load class: $class_name");
+                        if (!method_exists($class_name, $method))
+                            throw new \Exception("Method $method not found in class $class_name");
+                        $ret = $func($c_update);
+                    }
+                    else
+                        $ret = $func($c_update);
+                }
+            }
+            else
+                $ret = $func($c_update);
             if ($ret !== $c_update->next())
                 break;
         }
