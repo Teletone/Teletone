@@ -7,4 +7,4 @@
 1. [Downloading files](05_DOWNLOADING.md)
 1. [Webhook](06_WEBHOOK.md)
 1. [Keyboard](07_KEYBOARD.md)
-1. [Keyboard](08_CLASSES.md)
+1. [Bot on classes](08_CLASSES.md)
