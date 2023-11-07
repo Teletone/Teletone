@@ -43,10 +43,8 @@ class Update
 
     public function __get($name)
     {
-        if ($name == 'bot')
-            return $this->bot;
-        if ($name == 'params')
-            return $this->params;
+        if (isset($this->$name))
+            return $this->$name;
         if (empty($this->update->$name))
             return NULL;
         return $this->update->$name;
