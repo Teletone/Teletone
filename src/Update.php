@@ -14,6 +14,7 @@ class Update
     private $update;
     private $update_type;
     private $params = [];
+    private $params_text = '';
 
     public function __construct($bot, $update)
     {
@@ -36,6 +37,7 @@ class Update
             $params = explode(' ', $update->message->text);
             array_shift($params);
             $this->params = $params;
+            $this->params_text = implode(' ', $params);
         }
     }
 
