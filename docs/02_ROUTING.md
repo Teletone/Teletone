@@ -103,8 +103,12 @@ Params:
 Examples:
 
 ```php
-$r->callbackQuery('click', static function($update) {
-    $update->answer('clicked', [ 'show_alert' => true ]);
+$r->callbackQuery('click1', static function($update) {
+    $update->answerCallback('clicked', [ 'show_alert' => true ]);
+});
+
+$r->callbackQuery('click2', static function($update) {
+    $update->answerCallback(); // Will send an empty response so that the inline button is no longer in the loading state
 });
 ```
 

@@ -82,18 +82,22 @@ class Update
     }
 
     /** Message answer */
-    public function answer($text = '', $params = [])
+    public function answer($text, $params = [])
     {
-        if ($this->update_type == COMMAND || $this->update_type == MESSAGE)
-            $this->bot->_execute('sendMessage', array_merge([
-                'chat_id' => $this->update->message->from->id,
-                'text' => $text
-            ], $params));
-        if ($this->update_type == CALLBACK_QUERY)
-            $this->bot->_execute('answerCallbackQuery', array_merge([
-                'callback_query_id' => $this->update->callback_query->id,
-                'text' => $text
-            ], $params));
+        $obj_name = $this->getObjName();
+        $this->bot->_execute('sendMessage', array_merge([
+            'chat_id' => $this->update->$obj_name->from->id,
+            'text' => $text
+        ], $params));
+    }
+
+    /** Answer on callback */
+    public function answerCallback($text = '', $params = [])
+    {
+        $this->bot->_execute('answerCallbackQuery', array_merge([
+            'callback_query_id' => $this->update->callback_query->id,
+            'text' => $text
+        ], $params));
     }
 
     /** Send a new message or edit the current one on which the inline button was clicked. Useful for menus */
