@@ -44,10 +44,8 @@ class Update
         }
     }
 
-    public function __get($name)
+    public function getObjName()
     {
-        if (isset($this->$name))
-            return $this->$name;
         if ($this->update_type == COMMAND || $this->update_type == MESSAGE)
             $obj_name = 'message';
         elseif ($this->update_type == CALLBACK_QUERY)
@@ -57,6 +55,15 @@ class Update
                 $obj_name = 'chat_member';
             else
                 $obj_name = 'my_chat_member';
+        return $obj_name;
+    }
+
+    public function __get($name)
+    {
+        if (isset($this->$name))
+            return $this->$name;
+
+        $obj_name = $this->getObjName();
         if (empty($this->update->$obj_name->$name))
             return NULL;
         return $this->update->$obj_name->$name;
@@ -111,6 +118,20 @@ class Update
                 'message_id' => $this->update->callback_query->message->message_id,
                 'text' => $text
             ], $params));
+    }
+
+    /** Delete current message, user message in bot, in chat, or message from a bot */
+    public function delete()
+    {
+        $obj_name = $this->getObjName();
+        if (isset($this->update->$obj_name->message_id))
+            $message_id = $this->update->$obj_name->message_id;
+        else
+            $message_id = $this->update->$obj_name->message->message_id;
+        $this->bot->deleteMessage([
+            'chat_id' => $this->update->$obj_name->from->id,
+            'message_id' => $message_id
+        ]);
     }
 
     /** Message reply */
