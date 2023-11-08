@@ -38,7 +38,7 @@ $r->message('/[0-9]+/', static function($update) {
 
 // Any message
 $r->message(NULL, static function($update) {
-    $update->answer('Your message: '.$update->message->text);
+    $update->answer('Your message: '.$update->text);
 });
 ```
 
@@ -50,7 +50,7 @@ Params:
 
 - **text** - Command text
 - **callback** - Сallback for call
-- **regex** - Sets true to check command by regex, then text should be a regular expression
+- **regex** - Sets true to check command by regex, then text should be a regular expression. It will only check the command text without parameters
 
 Examples:
 
@@ -67,6 +67,11 @@ $r->command('num', static function($update) {
     $update->answer('Param1: '.$update->params[0]);
     $update->answer('Param2: '.$update->params[1]);
 });
+
+// Use: /num1 /num5
+$r->command('/num[0-9]/', static function($update) {
+    $update->answer('ok');
+}, true);
 ```
 
 ## any
@@ -116,7 +121,7 @@ Examples:
 
 ```php
 $r->chatMember(static function($update) {
-    echo 'new member: '.$update->my_chat_member->from->id;
+    echo 'new member: '.$update->from->id."\n";
 }, Teletone\Statuses::MEMBER);
 ```
 

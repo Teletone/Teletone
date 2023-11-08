@@ -15,9 +15,11 @@ Returns true if saving is successful, false otherwise
 Example:
 
 ```php
-$update->download('photo.jpg');
-// or
-$update->download('/home/user/photo.jpg');
+$r->message(NULL, static function($update) {
+    $update->download('photo.jpg');
+	// or
+	$update->download('/home/user/photo.jpg');
+}, false, Teletone\Types::PHOTO);
 ```
 
 [Next chapter: Webhook](06_WEBHOOK.md)

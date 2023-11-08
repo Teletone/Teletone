@@ -8,3 +8,4 @@
 1. [Webhook](06_WEBHOOK.md)
 1. [Keyboard](07_KEYBOARD.md)
 1. [Bot on classes](08_CLASSES.md)
+1. [Navigations through inline menu](09_NAVIGATIONS_INLINE.md)

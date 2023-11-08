@@ -6,14 +6,20 @@ When you need to install a bot on a server, you need to use webhooks. Thank God 
 
 Your server must pass the correct certificate, such as letsencrypt or self-signed certificate. Allowed ports for wenhook: 80, 88, 443, 8443
 
-After, use the setWebhook function. Pass the url of the entry point to the bot:
+After, use the setWebhook function. Pass the url of the entry point to the bot. In the second parameter you can pass the parameters described here: https://core.telegram.org/bots/api#setwebhook
 
 ```php
 $ret = $bot->setWebhook('https://example.com/bot.php');
 echo json_encode($ret);
 ```
 
-In the second parameter you can pass the parameters described here: https://core.telegram.org/bots/api#setwebhook
+You can use a self-signed certificate:
+
+```php
+$bot->setWebhook('https://example.com/bot.php', [
+    'certificate' => new Teletone\Types\InputFile('certificate.crt')
+]);
+```
 
 If everything went well you will see the message: **Webhook was set**
 
@@ -42,7 +48,7 @@ $bot = new Teletone\Bot($bot_token, [
 
 ## Safety
 
-By default, the first parameter for checking ip is true. This means the ip will be checked automatically against the official telegram ip, this also takes into account if you have Cloudflare protection. IP is taken from `$_SERVER['HTTP_CF_CONNECTING_IP']` or `$_SERVER['REMOTE_ADDR']`
+By default, the first parameter for checking ip is true. This means the ip will be checked automatically against the official telegram ip (subnets 149.154.160.0/20 and 91.108.4.0/22), this also takes into account if you have Cloudflare protection. IP is taken from `$_SERVER['HTTP_CF_CONNECTING_IP']` or `$_SERVER['REMOTE_ADDR']`
 
 You can disable the check:
 

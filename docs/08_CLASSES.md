@@ -42,3 +42,5 @@ $r->message('test', 'MyClass::func');
 ```
 
 All this also works with namespaces and class extends
+
+[Next chapter: Navigations through inline menu](09_NAVIGATIONS_INLINE.md)

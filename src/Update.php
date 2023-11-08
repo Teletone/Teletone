@@ -5,7 +5,8 @@ namespace Teletone;
 const COMMAND = 1;
 const MESSAGE = 2;
 const CALLBACK_QUERY = 3;
-const OTHER = 4;
+const CHAT_MEMBER = 4;
+const OTHER = 5;
 
 /** Class that provides convenient functions for Update */
 class Update
@@ -27,8 +28,10 @@ class Update
             else
                 $this->update_type = MESSAGE;
         }
-        else if (isset($update->callback_query))
+        elseif (isset($update->callback_query))
             $this->update_type = CALLBACK_QUERY;
+        elseif (isset($update->my_chat_member))
+            $this->update_type = CHAT_MEMBER;
         else
             $this->update_type = OTHER;
 
@@ -45,9 +48,18 @@ class Update
     {
         if (isset($this->$name))
             return $this->$name;
-        if (empty($this->update->$name))
+        if ($this->update_type == COMMAND || $this->update_type == MESSAGE)
+            $obj_name = 'message';
+        elseif ($this->update_type == CALLBACK_QUERY)
+            $obj_name = 'callback_query';
+        elseif ($this->update_type == CHAT_MEMBER)
+            if (isset($this->update->chat_member))
+                $obj_name = 'chat_member';
+            else
+                $obj_name = 'my_chat_member';
+        if (empty($this->update->$obj_name->$name))
             return NULL;
-        return $this->update->$name;
+        return $this->update->$obj_name->$name;
     }
 
     /** Used to return a function to handle the next matching handler */
@@ -73,6 +85,30 @@ class Update
         if ($this->update_type == CALLBACK_QUERY)
             $this->bot->_execute('answerCallbackQuery', array_merge([
                 'callback_query_id' => $this->update->callback_query->id,
+                'text' => $text
+            ], $params));
+    }
+
+    /** Send a new message or edit the current one on which the inline button was clicked. Useful for menus */
+    public function answerOrEdit($text, $params = [])
+    {
+        if ($this->update_type == CALLBACK_QUERY)
+            $this->bot->editMessageText(array_merge([
+                'chat_id' => $this->update->callback_query->message->chat->id,
+                'message_id' => $this->update->callback_query->message->message_id,
+                'text' => $text
+            ], $params));
+        else
+            $this->answer($text, $params);
+    }
+
+    /** Allows you to simply edit the message on which the inline button was clicked */
+    public function edit($text, $params = [])
+    {
+        if ($this->update_type == CALLBACK_QUERY)
+            $this->bot->editMessageText(array_merge([
+                'chat_id' => $this->update->callback_query->message->chat->id,
+                'message_id' => $this->update->callback_query->message->message_id,
                 'text' => $text
             ], $params));
     }
