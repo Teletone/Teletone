@@ -55,6 +55,8 @@ class Update
                 $obj_name = 'chat_member';
             else
                 $obj_name = 'my_chat_member';
+        else
+            $obj_name = 'message';
         return $obj_name;
     }
 

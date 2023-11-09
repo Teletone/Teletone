@@ -23,4 +23,5 @@ class Types
     const LOCATION = 32768;
     const INVOICE = 65536;
     const PASSPORTDATA = 131072;
+    const ALL = self::ANIMATION|self::AUDIO|self::DOCUMENT|self::PHOTO|self::STICKER|self::STORY|self::VIDEO|self::VIDEONOTE|self::VOICE|self::CONTACT|self::TEXT|self::DICE|self::GAME|self::POLL|self::VENUE|self::LOCATION|self::INVOICE|self::PASSPORTDATA;
 }
