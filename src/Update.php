@@ -126,16 +126,20 @@ class Update
             ], $params));
     }
 
-    /** Delete current message, user message in bot, in chat, or message from a bot */
+    /** Delete current message, user message in bot, in group, in channel or message from a bot */
     public function delete()
     {
         $obj_name = $this->getObjName();
+        if (isset($this->update->$obj_name->chat))
+            $chat_id = $this->update->$obj_name->chat->id;
+        else
+            $chat_id = $this->update->$obj_name->message->chat->id;
         if (isset($this->update->$obj_name->message_id))
             $message_id = $this->update->$obj_name->message_id;
         else
             $message_id = $this->update->$obj_name->message->message_id;
         $this->bot->deleteMessage([
-            'chat_id' => $this->update->$obj_name->from->id,
+            'chat_id' => $chat_id,
             'message_id' => $message_id
         ]);
     }
