@@ -9,3 +9,5 @@
 1. [Keyboard](07_KEYBOARD.md)
 1. [Bot on classes](08_CLASSES.md)
 1. [Navigations through inline menu](09_NAVIGATIONS_INLINE.md)
+1. [Groups](10_GROUPS.md)
+1. [Pre-handlers](11_PRE_HANDLERS.md)

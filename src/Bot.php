@@ -33,10 +33,13 @@ class Bot
      * @param array $options    Additional bot options
      * - parse_mode = Mode for parsing entities in the message text
      * - debug = Set true to enable debug mode
+     * - all_groups = Whether to allow processing of messages from chats by default, regardless of the for_groups parameter. Default is false
      */
     public function __construct($token, $options = [])
     {
         $this->token = $token;
+        if (!isset($options['all_groups']))
+            $options['all_groups'] = false;
         $this->options = $options;
         $this->client = new Client([
             'base_uri' => "https://api.telegram.org/bot{$token}/",
@@ -44,7 +47,7 @@ class Bot
             'timeout' => 10.0
         ]);
         $this->router = new Router($this);
-        if (php_sapi_name() === 'cli')
+        if (php_sapi_name() == 'cli' || strpos(php_sapi_name(), 'cgi' !== false))
             $this->run_type = 'polling';
         else
             $this->run_type = 'webhook';
@@ -268,5 +271,11 @@ class Bot
     function getClient()
     {
         return $this->client;
+    }
+
+    public function __get($name)
+    {
+        if (isset($this->$name))
+            return $this->$name;
     }
 }

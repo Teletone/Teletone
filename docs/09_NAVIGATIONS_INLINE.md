@@ -1,3 +1,5 @@
+[To main documentation](00_MAIN.md)
+
 # Navigations through inline menu
 
 For example, we have two menus. The second menu has a back button. It would seem that we need a new callback and a bunch of code, but with Teletone we can do this:
@@ -27,5 +29,6 @@ function menu2($u)
 
 The answerOrEdit function checks whether the request is a callback_query and edits the message, otherwise sends a new message to the user
 
-Also use the edit function to quickly edit a message, only works with callback_query
+Also use the **edit** function to quickly edit a message, only works with callback_query
 
+[Next chapter: Groups](10_GROUPS.md)

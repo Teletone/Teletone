@@ -16,10 +16,29 @@ class Router
         'callback_query' => [],
         'chat_member' => []
     ];
+    private $before_funcs = [];
 
     public function __construct($bot)
     {
         $this->bot = $bot;
+        $this->before_funcs = [
+            'any' => static function($u) { return true; },
+            'command' => static function($u) { return true; },
+            'message' => static function($u) { return true; },
+            'callback_query' => static function($u) { return true; },
+            'chat_member' => static function($u) { return true; }
+        ];
+    }
+
+    /**
+     * Specifies a function that will fire before processing the callback and decide whether it should be called. The function must return true or false
+     * 
+     * @param string $type      Type, value key from $before_funcs
+     * @param object $func      Function. The first parameter of the function is passed $update, this is class Update
+     */
+    public function registerBeforeFunc($type, $func)
+    {
+        $this->before_funcs[$type] = $func;
     }
 
     /**
@@ -64,13 +83,14 @@ class Router
      * 
      * @return NULL
      */
-    public function message($text, $callback, $regex = false, $types = Types::TEXT)
+    public function message($text, $callback, $regex = false, $types = Types::TEXT, $for_groups = false)
     {
         $this->routes['message'][] = [
             'text' => $text,
             'callback' => $callback,
             'regex' => $regex,
-            'types' => $types
+            'types' => $types,
+            'for_groups' => $for_groups
         ];
     }
 
@@ -121,39 +141,43 @@ class Router
         {
             if ($router_key == 'any')
             {
+                if (!$this->bot->router->before_funcs['any'](new Update($this->bot, $update)))
+                    continue;
                 foreach ($router_values as $route)
                     $call_array[] = $route['callback'];
             }
 
-            if (isset($update->message) && isset($update->message->text) && $router_key == 'command')
+            if (isset($update->message) && isset($update->message->text) && $update->message->text[0] === '/' && $router_key == 'command')
             {
-                if ($update->message->text[0] === '/')
+                if (!$this->bot->router->before_funcs['command'](new Update($this->bot, $update)))
+                    continue;
+                foreach ($router_values as $route)
                 {
-                    foreach ($router_values as $route)
+                    if (is_null($route['text']))
+                        $call = true;
+                    else
                     {
-                        if (is_null($route['text']))
-                            $call = true;
+                        $params = explode(' ', $update->message->text);
+                        $command = substr($params[0], 1);
+                        if ($route['regex'])
+                            $call = preg_match($route['text'], $command) === 1;
                         else
-                        {
-                            $params = explode(' ', $update->message->text);
-                            $command = substr($params[0], 1);
-                            if ($route['regex'])
-                                $call = preg_match($route['text'], $command) === 1;
-                            else
-                                $call = ($route['text'] === $command);
-                        }
+                            $call = ($route['text'] === $command);
+                    }
 
-                        if ($call)
-                        {
-                            $call_array[] = $route['callback'];
-                            $call = false;
-                        }
+                    if ($call)
+                    {
+                        $call_array[] = $route['callback'];
+                        $call = false;
                     }
                 }
             }
 
-            if (isset($update->message) && $router_key == 'message')
+            if ((isset($update->message) && (!isset($update->message->entities) || (isset($update->message->entities) && $update->message->entities[0]->type != 'bot_command'))) && $router_key == 'message')
             {
+                // Checking whether a callback needs to be executed
+                if (!$this->bot->router->before_funcs['message'](new Update($this->bot, $update)))
+                    continue;
                 foreach ($router_values as $route)
                 {
                     if (isset($update->message->text) && ($route['types'] & Types::TEXT))
@@ -161,15 +185,24 @@ class Router
                         // not a command
                         if ($update->message->text[0] !== '/')
                         {
-                            // handle all
-                            if (is_null($route['text']))
-                                $call = true;
+                            // message in group
+                            if ($route['for_groups'] && $update->message->chat->type == 'private')
+                                $call = false;
+                            // here the processing of messages for which the for_groups flag is not set is checked
+                            elseif (!$this->bot->options['all_groups'] && !$route['for_groups'] && $update->message->chat->type != 'private')
+                                $call = false;
                             else
-                                // handle if regex
-                                if ($route['regex'])
-                                    $call = preg_match($route['text'], $update->message->text) === 1;
+                            {
+                                // handle all
+                                if (is_null($route['text']))
+                                    $call = true;
                                 else
-                                    $call = ($route['text'] === $update->message->text);
+                                    // handle if regex
+                                    if ($route['regex'])
+                                        $call = preg_match($route['text'], $update->message->text) === 1;
+                                    else
+                                        $call = ($route['text'] === $update->message->text);
+                            }
 
                             if ($call)
                             {
@@ -178,6 +211,12 @@ class Router
                             }
                         }
                     }
+
+                    if (isset($update->message->left_chat_participant))
+                        $call = ($route['types'] & Types::LEFT_CHAT_PARTICIPANT);
+
+                    if (isset($update->message->new_chat_participant))
+                        $call = ($route['types'] & Types::NEW_CHAT_PARTICIPANT);
 
                     if (isset($update->message->animation))
                         $call = ($route['types'] & Types::ANIMATION);
@@ -237,6 +276,8 @@ class Router
 
             if (isset($update->callback_query) && $router_key == 'callback_query')
             {
+                if (!$this->bot->router->before_funcs['callback_query'](new Update($this->bot, $update)))
+                    continue;
                 foreach ($this->routes['callback_query'] as $route)
                 {
                     if ($route['regex'])
@@ -254,6 +295,8 @@ class Router
 
             if ((isset($update->my_chat_member) || isset($update->chat_member)) && $router_key == 'chat_member')
             {
+                if (!$this->bot->router->before_funcs['chat_member'](new Update($this->bot, $update)))
+                    continue;
                 $chat_member = (isset($update->my_chat_member)) ? $update->my_chat_member : ((isset($update->chat_member)) ? $update->chat_member : $update->message);
                 foreach ($this->routes['chat_member'] as $route)
                 {

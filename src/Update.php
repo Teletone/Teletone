@@ -83,12 +83,64 @@ class Update
         return json_decode(json_encode($this->update), true);
     }
 
+    /** Converts a message in update to html format based on entities */
+    public function convertToHTML()
+    {
+        if (empty($this->update->message->entities))
+        {
+            if (empty($this->update->message->text))
+                return '';
+            return $this->update->message->text;
+        }
+        $entities = $this->update->message->entities;
+        $text = $this->update->message->text;
+        $ret = $text;
+        $offset = 0; // offset used for editing
+        $prev_offset = -1;
+        foreach ($entities as $entity)
+        {
+            if ($entity->type == 'bold')
+            {
+                $add_start = '<b>';
+                $add_end = '</b>';
+            }
+            elseif ($entity->type == 'italic')
+            {
+                $add_start = '<i>';
+                $add_end = '</i>';
+            }
+            elseif ($entity->type == 'underline')
+            {
+                $add_start = '<u>';
+                $add_end = '</u>';
+            }
+            // calculate the data before in and after the tag
+            if ($entity->offset == $prev_offset) { // if the offset is in the same place
+                $text_before = mb_substr($ret, 0, $entity->offset + $offset - $prev_offset_len); // insert the tag before inserting the previous tag
+                $text_in = mb_substr($ret, $entity->offset + $offset - $prev_offset_len, $entity->length + $prev_offset_len);
+            }
+            else
+            {
+                $text_before = mb_substr($ret, 0, $entity->offset + $offset);
+                $text_in = mb_substr($ret, $entity->offset + $offset, $entity->length);
+            }
+            $text_after = mb_substr($ret, $entity->offset + $offset + $entity->length);
+            $ret = $text_before . $add_start . $text_in . $add_end . $text_after;
+            // the text has been edited so you need to add an offset
+            $offset += strlen($add_start) + strlen($add_end);
+            $prev_offset = $entity->offset;
+            $prev_offset_len = strlen($add_start) + strlen($add_end);
+            // this is difficult, my head hurts from the complexity and nesting of tags, it’s very difficult to do
+        }
+        return $ret;
+    }
+
     /** Message answer */
     public function answer($text, $params = [])
     {
         $obj_name = $this->getObjName();
         $this->bot->_execute('sendMessage', array_merge([
-            'chat_id' => $this->update->$obj_name->from->id,
+            'chat_id' => $this->update->$obj_name->chat->id,
             'text' => $text
         ], $params));
     }

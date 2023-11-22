@@ -7,7 +7,7 @@
 # Requirements
 
 - PHP 7.25+
-- Straight arms
+- Bhagavad Gita
 
 # Install
 
@@ -75,6 +75,8 @@ Run **dev.sh** and develop
 
 If you plan to run a real bot on a PC, then it is better to use $bot->polling() for better performance
 
+**As I found out, this method really slows down the computer!**
+
 # Donate
 
 A fool waits for money from heaven, but a smart man works. Write an email to teletone@skiff.com if you need a telegram (or discord) bot, and I can develop you any bot for your money
@@ -88,10 +90,8 @@ composer run tests
 
 # Performance
 
-The library works as fast as possible. But it also depends on the performance of the server and its location from the telegram servers. For good testing, we need testers who have loaded bots with requests that exceed 10,000 requests per minute
+The library works as fast as possible, and it is faster than other libraries due to its simplicity
 
 # Contributing
 
 Just use the library and report bugs
-
-Me, my wife, and some good people write this nonsense
