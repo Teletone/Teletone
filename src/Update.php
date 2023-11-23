@@ -139,8 +139,12 @@ class Update
     public function answer($text, $params = [])
     {
         $obj_name = $this->getObjName();
+        if (isset($this->update->$obj_name->chat))
+            $chat_id = $this->update->$obj_name->chat->id;
+        else
+            $chat_id = $this->update->$obj_name->message->chat->id;
         $this->bot->_execute('sendMessage', array_merge([
-            'chat_id' => $this->update->$obj_name->chat->id,
+            'chat_id' => $chat_id,
             'text' => $text
         ], $params));
     }
