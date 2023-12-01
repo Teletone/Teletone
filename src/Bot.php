@@ -47,7 +47,7 @@ class Bot
             'timeout' => 10.0
         ]);
         $this->router = new Router($this);
-        if (php_sapi_name() == 'cli' || strpos(php_sapi_name(), 'cgi' !== false))
+        if (php_sapi_name() == 'cli' || strpos(php_sapi_name(), 'cgi') !== false)
             $this->run_type = 'polling';
         else
             $this->run_type = 'webhook';
