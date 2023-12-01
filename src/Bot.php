@@ -120,7 +120,7 @@ class Bot
                 else
                     $ip = $_SERVER['REMOTE_ADDR'];
             }
-            if (!$this->ipInNet($ip, '149.154.160.0/20') || !$this->ipInNet($ip, '91.108.4.0/22'))
+            if (!$this->ipInNet($ip, '149.154.160.0/20') && !$this->ipInNet($ip, '91.108.4.0/22'))
             {
                 $this->debug("IP $ip does not match trusted IPs");
                 return false;
